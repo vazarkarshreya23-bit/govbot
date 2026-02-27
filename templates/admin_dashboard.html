@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – GovBot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Dashboard Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🏛️</span>
+        <div>
+          <div class="logo-title">GovBot Admin</div>
+          <div class="logo-sub">Application Management Dashboard</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="/" class="nav-link">← Chatbot</a>
+        <a href="/admin/logout" class="btn-reset">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="dashboard">
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      {% set total    = applications | length %}
+      {% set pending  = applications | selectattr('status', 'equalto', 'Pending')   | list | length %}
+      {% set review   = applications | selectattr('status', 'equalto', 'In Review') | list | length %}
+      {% set approved = applications | selectattr('status', 'equalto', 'Approved')  | list | length %}
+      {% set rejected = applications | selectattr('status', 'equalto', 'Rejected')  | list | length %}
+
+      <div class="stat-card"><div class="stat-num">{{ total }}</div><div class="stat-label">Total</div></div>
+      <div class="stat-card pending"><div class="stat-num">{{ pending }}</div><div class="stat-label">Pending</div></div>
+      <div class="stat-card review"><div class="stat-num">{{ review }}</div><div class="stat-label">In Review</div></div>
+      <div class="stat-card approved"><div class="stat-num">{{ approved }}</div><div class="stat-label">Approved</div></div>
+      <div class="stat-card rejected"><div class="stat-num">{{ rejected }}</div><div class="stat-label">Rejected</div></div>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>All Applications</h2>
+        <input type="text" id="searchBox" class="search-input" placeholder="🔍  Search by name, ID, service..." oninput="filterTable()"/>
+      </div>
+
+      {% if applications %}
+      <div class="table-wrap">
+        <table class="app-table" id="appTable">
+          <thead>
+            <tr>
+              <th>App ID</th>
+              <th>Service</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Phone</th>
+              <th>Details</th>
+              <th>Submitted</th>
+              <th>Status</th>
+              <th>Update</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+            <tr>
+              <td><code class="app-id">{{ app.app_id }}</code></td>
+              <td><span class="badge badge-{{ app.service }}">{{ app.service | capitalize }}</span></td>
+              <td>{{ app.name }}</td>
+              <td>{{ app.age }}</td>
+              <td>{{ app.phone }}</td>
+              <td class="details-cell" title="{{ app.details }}">{{ app.details[:30] }}{% if app.details|length > 30 %}…{% endif %}</td>
+              <td class="date-cell">{{ app.created_at }}</td>
+              <td>
+                <span class="status-badge status-{{ app.status | replace(' ', '-') | lower }}">
+                  {{ app.status }}
+                </span>
+              </td>
+              <td>
+                <!-- Mini form to update status -->
+                <form method="POST" action="/admin/update" class="update-form">
+                  <input type="hidden" name="app_id" value="{{ app.app_id }}"/>
+                  <select name="status" class="status-select">
+                    <option value="Pending"   {% if app.status == 'Pending'   %}selected{% endif %}>Pending</option>
+                    <option value="In Review" {% if app.status == 'In Review' %}selected{% endif %}>In Review</option>
+                    <option value="Approved"  {% if app.status == 'Approved'  %}selected{% endif %}>Approved</option>
+                    <option value="Rejected"  {% if app.status == 'Rejected'  %}selected{% endif %}>Rejected</option>
+                  </select>
+                  <button type="submit" class="update-btn">Save</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <div class="empty-state">
+          <div style="font-size:3rem">📭</div>
+          <p>No applications yet. They will appear here once users submit through the chatbot.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    // Simple search filter for the table
+    function filterTable() {
+      const query = document.getElementById("searchBox").value.toLowerCase();
+      const rows  = document.querySelectorAll("#appTable tbody tr");
+      rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(query) ? "" : "none";
+      });
+    }
+  </script>
+</body>
+</html>

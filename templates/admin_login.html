@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login – GovBot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo">🏛️</div>
+      <h1 class="login-title">Admin Portal</h1>
+      <p class="login-sub">Government Digital Services</p>
+
+      {% if error %}
+        <div class="error-box">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/admin">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input class="form-input" type="text" name="username" placeholder="Enter username" required autocomplete="off"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" name="password" placeholder="Enter password" required/>
+        </div>
+        <button class="login-btn" type="submit">Sign In →</button>
+      </form>
+
+      <p class="login-hint">Default: <code>admin</code> / <code>admin123</code></p>
+      <a href="/" class="back-link">← Back to Chatbot</a>
+    </div>
+  </div>
+</body>
+</html>

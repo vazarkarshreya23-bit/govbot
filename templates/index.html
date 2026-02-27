@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GovBot – Digital Governance Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+  <!-- ── Background decorative grid ── -->
+  <div class="bg-grid"></div>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🏛️</span>
+        <div>
+          <div class="logo-title">GovBot</div>
+          <div class="logo-sub">Autonomous Digital Governance System</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="/admin" class="nav-link">Admin Panel</a>
+        <button class="btn-reset" onclick="resetChat()">↺ Reset</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Main Layout ── -->
+  <main class="main">
+
+    <!-- Side info panel -->
+    <aside class="side-panel">
+      <h3 class="side-title">Available Services</h3>
+      <ul class="service-list">
+        <li class="service-item" onclick="sendQuick('apply')">
+          <span class="s-icon">🚗</span>
+          <div><b>License</b><p>Driving &amp; Trade License</p></div>
+        </li>
+        <li class="service-item" onclick="sendQuick('apply')">
+          <span class="s-icon">📄</span>
+          <div><b>Certificate</b><p>Birth, Income, Caste</p></div>
+        </li>
+        <li class="service-item" onclick="sendQuick('apply')">
+          <span class="s-icon">📝</span>
+          <div><b>Complaint</b><p>File a Grievance</p></div>
+        </li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="tip-title">💡 Quick Tips</div>
+        <div class="tip-text">Type <b>apply</b> to start a new application.</div>
+        <div class="tip-text">Type <b>status</b> to track your application.</div>
+      </div>
+    </aside>
+
+    <!-- Chat window -->
+    <section class="chat-section">
+      <div class="chat-window" id="chatWindow">
+        <!-- Messages appear here -->
+        <div class="message bot-message intro">
+          <div class="avatar">🤖</div>
+          <div class="bubble">
+            <p>Namaste! 🙏 Welcome to the <b>Government Digital Services Portal.</b></p>
+            <p style="margin-top:8px">I can help you:</p>
+            <ul style="margin:6px 0 0 16px; line-height:1.9">
+              <li>📝 Apply for licenses, certificates, or file complaints</li>
+              <li>🔍 Track your application status</li>
+            </ul>
+            <p style="margin-top:10px">Type <b>apply</b> to get started!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="chat-input-bar">
+        <input
+          type="text"
+          id="userInput"
+          class="chat-input"
+          placeholder="Type your message here..."
+          autocomplete="off"
+          onkeydown="if(event.key==='Enter') sendMessage()"
+        />
+        <button class="send-btn" onclick="sendMessage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/static/js/chat.js"></script>
+</body>
+</html>
